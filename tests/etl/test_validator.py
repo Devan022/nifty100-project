@@ -1,23 +1,23 @@
-from src.etl.loader import ExcelLoader
-from src.etl.validator import DataValidator
+from pathlib import Path
+import pandas as pd
 
-# Load all datasets
-loader = ExcelLoader()
-datasets = loader.load_all()
+file_path = Path("data/raw/companies.xlsx")
 
-# Get the companies dataset
-df = datasets["companies"]
+for h in [0, 1, 2, 3, 4, 5]:
+    print("\n" + "=" * 60)
+    print(f"HEADER = {h}")
+    print("=" * 60)
 
-# Create validator
-validator = DataValidator()
+    try:
+        df = pd.read_excel(
+            file_path,
+            sheet_name="Companies",
+            header=h
+        )
 
-# Run duplicate company ID check
-validator.check_duplicate_company_id(df)
+        print(df.head(5))
+        print("\nColumns:")
+        print(df.columns.tolist())
 
-# Export report
-validator.export_failures("output/validation_failures.csv")
-
-# Print failures
-print("\nValidation Failures:")
-for failure in validator.failures:
-    print(failure)
+    except Exception as e:
+        print(e)
