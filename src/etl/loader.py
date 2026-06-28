@@ -13,14 +13,17 @@ class ExcelLoader:
     def load_file(self, filename):
         """
         Load one Excel file.
-        Returns a dictionary of DataFrames if multiple sheets exist.
         """
+
         file_path = self.data_dir / filename
 
         if not file_path.exists():
             raise FileNotFoundError(f"{filename} not found.")
 
-        return pd.read_excel(file_path, sheet_name=None)
+        return pd.read_excel(
+            file_path,
+            header=1
+        )
 
     def load_all(self):
         """
