@@ -21,9 +21,10 @@ class ExcelLoader:
             raise FileNotFoundError(f"{filename} not found.")
 
         return pd.read_excel(
-            file_path,
-            header=1
-        )
+    file_path,
+    sheet_name=None,
+    header=0
+)
 
     def load_all(self):
         """
