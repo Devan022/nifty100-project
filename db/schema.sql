@@ -155,7 +155,9 @@ CREATE TABLE IF NOT EXISTS prosandcons (
 ----------------------------------------------------
 CREATE TABLE IF NOT EXISTS sectors (
 
-    company_id TEXT PRIMARY KEY,
+    id INTEGER,
+
+    company_id TEXT,
 
     broad_sector TEXT,
 
@@ -164,6 +166,8 @@ CREATE TABLE IF NOT EXISTS sectors (
     index_weight_pct REAL,
 
     market_cap_category TEXT,
+
+    PRIMARY KEY(company_id),
 
     FOREIGN KEY(company_id)
         REFERENCES companies(id)
@@ -174,19 +178,23 @@ CREATE TABLE IF NOT EXISTS sectors (
 ----------------------------------------------------
 CREATE TABLE IF NOT EXISTS stock_prices (
 
+    id INTEGER,
+
     company_id TEXT,
 
     date TEXT,
 
-    open REAL,
+    open_price REAL,
 
-    high REAL,
+    high_price REAL,
 
-    low REAL,
+    low_price REAL,
 
-    close REAL,
+    close_price REAL,
 
     volume INTEGER,
+
+    adjusted_close REAL,
 
     PRIMARY KEY(company_id, date),
 
@@ -197,24 +205,18 @@ CREATE TABLE IF NOT EXISTS stock_prices (
 ----------------------------------------------------
 -- Market Cap
 ----------------------------------------------------
-CREATE TABLE IF NOT EXISTS market_cap (
-
-    company_id TEXT,
-
-    year INTEGER,
-
-    market_cap REAL,
-
-    pe REAL,
-
-    pb REAL,
-
+CREATE TABLE market_cap (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    company_id TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    market_cap_crore REAL,
+    enterprise_value_crore REAL,
+    pe_ratio REAL,
+    pb_ratio REAL,
     ev_ebitda REAL,
-
-    PRIMARY KEY(company_id, year),
-
-    FOREIGN KEY(company_id)
-        REFERENCES companies(id)
+    dividend_yield_pct REAL,
+    FOREIGN KEY(company_id) REFERENCES companies(company_id),
+    UNIQUE(company_id, year)
 );
 
 ----------------------------------------------------
@@ -222,23 +224,37 @@ CREATE TABLE IF NOT EXISTS market_cap (
 ----------------------------------------------------
 CREATE TABLE IF NOT EXISTS financial_ratios (
 
+    id INTEGER,
+
     company_id TEXT,
 
-    year INTEGER,
+    year TEXT,
 
-    roe REAL,
+    net_profit_margin_pct REAL,
 
-    roce REAL,
+    operating_profit_margin_pct REAL,
 
-    debt_equity REAL,
+    return_on_equity_pct REAL,
 
-    current_ratio REAL,
+    debt_to_equity REAL,
 
-    quick_ratio REAL,
+    interest_coverage REAL,
 
     asset_turnover REAL,
 
-    interest_coverage REAL,
+    free_cash_flow_cr REAL,
+
+    capex_cr REAL,
+
+    earnings_per_share REAL,
+
+    book_value_per_share REAL,
+
+    dividend_payout_ratio_pct REAL,
+
+    total_debt_cr REAL,
+
+    cash_from_operations_cr REAL,
 
     PRIMARY KEY(company_id, year),
 

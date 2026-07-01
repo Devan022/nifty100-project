@@ -21,6 +21,7 @@ class DatabaseInitializer:
         """
 
         connection = sqlite3.connect(self.db_path)
+        connection.execute("PRAGMA foreign_keys = ON;")
 
         with open(self.schema_path, "r") as file:
             schema = file.read()

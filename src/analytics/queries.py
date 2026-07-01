@@ -1,11 +1,16 @@
 import sqlite3
 import pandas as pd
-
+import os
 
 class Analytics:
 
     def __init__(self, db_path="db/nifty100.db"):
+
+        print("DATABASE =", os.path.abspath(db_path))
+
         self.connection = sqlite3.connect(db_path)
+        print(self.connection.execute("SELECT COUNT(*) FROM market_cap").fetchone())
+        print(self.connection.execute("SELECT COUNT(*) FROM financial_ratios").fetchone())
 
     def query(self, sql):
         return pd.read_sql_query(sql, self.connection)
