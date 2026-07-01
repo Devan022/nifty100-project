@@ -1,56 +1,126 @@
--- Query 1: Show first 10 companies
-SELECT *
-FROM companies
-LIMIT 10;
+-- ==========================================
+-- Query 1: Top 10 Companies by Market Cap
+-- ==========================================
 
--- Query 2: Top 10 companies by market cap
-SELECT company_id, year, market_cap_crore
+SELECT
+    company_id,
+    year,
+    market_cap_crore
 FROM market_cap
+WHERE year = (
+    SELECT MAX(year)
+    FROM market_cap
+)
 ORDER BY market_cap_crore DESC
 LIMIT 10;
 
--- Query 3: Average ROE
-SELECT AVG(return_on_equity_pct) AS average_roe
+
+-- ==========================================
+-- Query 2: Average ROE
+-- ==========================================
+
+SELECT
+    AVG(return_on_equity_pct) AS average_roe
 FROM financial_ratios;
 
--- Query 4: Top 10 companies by sales
-SELECT company_id, year, sales
+
+-- ==========================================
+-- Query 3: Highest Debt to Equity
+-- ==========================================
+
+SELECT
+    company_id,
+    year,
+    debt_to_equity
+FROM financial_ratios
+ORDER BY debt_to_equity DESC
+LIMIT 10;
+
+
+-- ==========================================
+-- Query 4: Highest Net Profit
+-- ==========================================
+
+SELECT
+    company_id,
+    year,
+    net_profit
+FROM profitandloss
+ORDER BY net_profit DESC
+LIMIT 10;
+
+
+-- ==========================================
+-- Query 5: Highest Sales
+-- ==========================================
+
+SELECT
+    company_id,
+    year,
+    sales
 FROM profitandloss
 ORDER BY sales DESC
 LIMIT 10;
 
--- Query 5: Highest operating cash flow
-SELECT company_id, year, cash_from_operating_activity
-FROM cashflow
-ORDER BY cash_from_operating_activity DESC
-LIMIT 10;
 
--- Query 6: Number of companies in each sector
-SELECT broad_sector, COUNT(*) AS total_companies
-FROM sectors
-GROUP BY broad_sector
-ORDER BY total_companies DESC;
+-- ==========================================
+-- Query 6: Highest Operating Cash Flow
+-- ==========================================
 
--- Query 7: Highest PE ratio
-SELECT company_id, year, pe_ratio
-FROM market_cap
-ORDER BY pe_ratio DESC
-LIMIT 10;
-
--- Query 8: Highest dividend yield
-SELECT company_id, year, dividend_yield_pct
-FROM market_cap
-ORDER BY dividend_yield_pct DESC
-LIMIT 10;
-
--- Query 9: Highest ROCE
-SELECT company_id, year, return_on_capital_employed_pct
+SELECT
+    company_id,
+    year,
+    cash_from_operations_cr
 FROM financial_ratios
-ORDER BY return_on_capital_employed_pct DESC
+ORDER BY cash_from_operations_cr DESC
 LIMIT 10;
 
--- Query 10: Companies with highest EPS
-SELECT company_id, year, eps
-FROM profitandloss
-ORDER BY eps DESC
+
+-- ==========================================
+-- Query 7: Highest Book Value
+-- ==========================================
+
+SELECT
+    id,
+    book_value
+FROM companies
+ORDER BY book_value DESC
+LIMIT 10;
+
+
+-- ==========================================
+-- Query 8: Companies with Lowest PE Ratio
+-- ==========================================
+
+SELECT
+    company_id,
+    year,
+    pe_ratio
+FROM market_cap
+WHERE pe_ratio IS NOT NULL
+ORDER BY pe_ratio ASC
+LIMIT 10;
+
+
+-- ==========================================
+-- Query 9: Companies with Highest ROCE
+-- ==========================================
+
+SELECT
+    id,
+    roce_percentage
+FROM companies
+ORDER BY roce_percentage DESC
+LIMIT 10;
+
+
+-- ==========================================
+-- Query 10: Companies with Highest ROE
+-- ==========================================
+
+SELECT
+    id,
+    roe_percentage
+FROM companies
+ORDER BY roe_percentage DESC
 LIMIT 10;

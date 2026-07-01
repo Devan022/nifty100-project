@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS stock_prices (
 ----------------------------------------------------
 -- Market Cap
 ----------------------------------------------------
-CREATE TABLE market_cap (
+CREATE TABLE IF NOT EXISTS market_cap (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     company_id TEXT NOT NULL,
     year INTEGER NOT NULL,
